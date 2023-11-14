@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1025267853843",
+    "project_id": "jumachu123-a4915",
+    "storage_bucket": "jumachu123-a4915.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025267853843:android:91feb9d9e029f1b7456de6",
+        "android_client_info": {
+          "package_name": "com.example.gdsc_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASNFzR_HAswMcONLESFJB_sXBC4ePX2bo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

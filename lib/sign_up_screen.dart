@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -8,6 +10,46 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  //-----------------------------
+
+  final _authemtication = FirebaseAuth.instance; //파이어베이스 사용자 인증과 등록에 사용할 인스턴스
+
+  String userEmail = '';
+  String userPassword = '';
+  final _formkey = GlobalKey<FormState>();
+
+  void _tryValidation() {
+    final isValid = _formkey.currentState!.validate(); //!는 null이 아님을
+    if (isValid) {
+      _formkey.currentState!.save();
+    }
+  }
+
+  void signUp() async {
+    _tryValidation(); //validation 기능을 위함.
+
+    try {
+      final newUser = await _authemtication.createUserWithEmailAndPassword(
+          email: userEmail, password: userPassword);
+
+      if (newUser.user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('회원가입 완료!'),
+          ),
+        );
+      }
+    } on FirebaseAuthException catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('오류입니다!'),
+        ),
+      );
+    }
+  }
+
+  //-----------------------------
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,6 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         title: const Text('회원가입 페이지'),
       ),
       body: Form(
+        key: _formkey, //각 TextFormField를 구분하기 위해 Form에서 key를 지정
         child: Container(
           margin: const EdgeInsets.all(30),
           child: Column(
@@ -27,7 +70,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               Container(
                 color: const Color.fromARGB(255, 255, 255, 164),
-                child: TextFormField(),
+                child: TextFormField(
+                  //-----------------------------------------------------------
+                  key: const ValueKey(1),
+                  validator: (value) {
+                    if (value!.isEmpty || !value.contains('@')) {
+                      return '올바른 이메일 형식을 입력해주세요.';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    userEmail = value!;
+                  },
+                  onChanged: (value) {
+                    userEmail = value;
+                  },
+                ),
               ),
               const SizedBox(
                 height: 30,
@@ -38,11 +96,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               Container(
                 color: const Color.fromARGB(255, 255, 255, 164),
-                child: TextFormField(),
+                child: TextFormField(
+                  key: const ValueKey(2),
+                  validator: (value) {
+                    if (value!.isEmpty || value.length < 6) {
+                      return '최소 6글자 이상 입력하세요.';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    userPassword = value!;
+                  },
+                  onChanged: (value) {
+                    userPassword = value;
+                  },
+
+                  //-----------------------------------------------------------
+                ),
               ),
               const SizedBox(height: 100),
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  signUp(); //회원가입 버튼이 눌렸을 때 signUp 함수를 불러온다.
+                },
                 child: const Text('회원가입! 😎'),
               )
             ],
