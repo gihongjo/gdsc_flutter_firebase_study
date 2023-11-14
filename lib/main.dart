@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'sign_up_screen.dart';
 
 void main() {
+  //Flutter 프로젝트를 실행시키는 main 함수
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  //MyHomePage 클래스를 실행시키는 MyApp 클래스
   const MyApp({super.key});
 
   // This widget is the root of your application.
@@ -35,34 +38,48 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Firebase를 배워보아요.'),
+        backgroundColor: const Color.fromARGB(255, 178, 189, 255),
+        title: const Text('로그인 페이지'),
       ),
       body: Form(
         child: Container(
-          margin: EdgeInsets.all(30),
+          margin: const EdgeInsets.all(30),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'e-mail',
                 style: TextStyle(fontSize: 20),
               ),
               Container(
-                color: Color.fromRGBO(255, 255, 0, 1),
+                color: const Color.fromARGB(255, 255, 255, 164),
                 child: TextFormField(),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
-              Text(
+              const Text(
                 'password',
                 style: TextStyle(fontSize: 20),
               ),
               Container(
-                color: Color.fromRGBO(255, 255, 0, 1),
+                color: const Color.fromARGB(255, 255, 255, 164),
                 child: TextFormField(),
               ),
-              SizedBox(height: 100),
+              const SizedBox(height: 100),
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const SignUpScreen();
+                      },
+                    ),
+                  );
+                },
+                child: const Text('👉회원가입 페이지로 이동👈'),
+              )
             ],
           ),
         ),
